@@ -1,0 +1,50 @@
+---
+  - name: Install Docker
+    hosts: localhost
+    tasks:
+      - name: Docker
+        apt:
+          name: docker.io
+          state: latest
+      - name: Docker Compose
+        apt:
+          name: docker-compose
+          state: latest
+
+  - name: Join to RDVM Domain
+    hosts: localhost
+    vars:
+      ad_domain: rdvm.tech
+      ad_user: ryan
+      ad_password:
+
+    tasks:
+      - name: Install Required Packages
+        apt:
+          name:
+            - realmd
+            - sssd-tools
+            - libpam-sss
+            - adcli
+            - samba-common-bin
+            - oddjob
+            - oddjob-mkhomedir
+            - packagekit
+          state: latest
+      - name: Delete Ubuntu Configured resolve.conf
+        file:
+          path: /etc/resolv.conf
+          state: absent
+      - name: Symlink Default Resolve.conf
+        file:
+          src: /run/systemd/resolve/resolv.conf
+          dest: /etc/resolv.conf
+          state: link
+      - name: Join Domain
+        shell: realm join -U {{ ad_user }} {{ ad_domain }} --install=/ -U {{ ad_user }}%{{ ad_password }}
+      - name: Ensure home directory is created at sign in
+        shell: echo "session optional  pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session
+      - name: Add sudo group to sudoers file
+        shell: echo "%sudo@rdvm.tech ALL=(ALL:ALL) ALL" >> /etc/sudoers
+      - name: Import my SSH Keys
+        shell: echo { ad_password }} | su ryan@rdvm.tech -c "ssh-import-id-gh ryanvanmass"
