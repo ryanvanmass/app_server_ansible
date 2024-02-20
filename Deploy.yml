@@ -10,6 +10,12 @@
         apt:
           name: docker-compose
           state: latest
+      - name: Enable Docker Socket
+        servicee:
+          name: docker.socket
+          state: started
+          enabled: yes
+
 
   - name: Join to RDVM Domain
     hosts: localhost
