@@ -25,7 +25,7 @@
     
     vars_prompt:
       - name: ad_password
-        prompt: "Please Enter your AD Password:"
+        prompt: "Please Enter your AD Password: "
         private: false
 
     tasks:
