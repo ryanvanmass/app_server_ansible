@@ -16,7 +16,11 @@
     vars:
       ad_domain: rdvm.tech
       ad_user: ryan
-      ad_password:
+    
+    vars_prompt:
+      - name: ad_password
+        prompt: "Please Enter your AD Password:"
+        private: false
 
     tasks:
       - name: Install Required Packages
