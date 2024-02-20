@@ -11,7 +11,7 @@
           name: docker-compose
           state: latest
       - name: Enable Docker Socket
-        servicee:
+        service:
           name: docker.socket
           state: started
           enabled: yes
