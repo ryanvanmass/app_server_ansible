@@ -51,7 +51,7 @@
           dest: /etc/resolv.conf
           state: link
       - name: Join Domain
-        shell: realm join -U {{ ad_user }} {{ ad_domain }} --install=/ -U {{ ad_user }}%{{ ad_password }}
+        shell: echo {{ ad_password }} | realm join -U {{ ad_user }} {{ ad_domain }}
       - name: Ensure home directory is created at sign in
         shell: echo "session optional  pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session
       - name: Add sudo group to sudoers file
