@@ -59,6 +59,14 @@
       - name: Import my SSH Keys
         shell: echo { ad_password }} | su ryan@rdvm.tech -c "ssh-import-id-gh ryanvanmass"
 
+  - name: Configure XEN Guest Utilities
+    hosts: localhost
+    tasks:
+      - name: Install xe-guest-utilities
+        apt:
+          name: xe-guest-utilities
+          state: installed
+
 
   - name: Configure Zabbix Agent
     hosts: localhost
