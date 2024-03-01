@@ -66,30 +66,3 @@
         apt:
           name: xe-guest-utilities
           state: installed
-
-
-  - name: Configure Zabbix Agent
-    hosts: localhost
-    tasks:
-      - name: Download Zabbix Repo Package
-        get_url:
-        url: https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4+ubuntu22.04_all.deb
-        dest: /home/rdvm_admin/zabbix-release_6.0-4+ubuntu22.04_all.deb
-      - name: Install Zabbix Repo Package
-        apt:
-          deb: /home/rdvm_admin/zabbix-release_6.0-4+ubuntu22.04_all.deb
-        become: true
-      - name: Install Zabbix Agent
-        apt:
-          name:
-            - zabbix-agent2
-            - zabbix-agent-plugin-*
-          state: latest
-        become: true
-      - name: Enable Zabbix Agent Service
-        systemd_service:
-          name: zabbix-agent2
-          enabled: true
-          state: restarted
-      - name: Replace Config File to configure agent
-        
