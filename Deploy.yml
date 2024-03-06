@@ -65,4 +65,4 @@
       - name: Install xe-guest-utilities
         apt:
           name: xe-guest-utilities
-          state: installed
+          state: latest
