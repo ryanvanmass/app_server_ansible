@@ -20,7 +20,7 @@
   - name: Join to RDVM Domain
     hosts: localhost
     vars:
-      ad_domain: rdvm.tech
+      ad_domain: rdvm.local
       ad_user: ryan
     
     vars_prompt:
