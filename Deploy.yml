@@ -17,14 +17,14 @@
           enabled: yes
 
 
-  - name: Join to RDVM Domain
+  - name: Join to Google Workspace
     hosts: localhost
     vars:
       ad_domain: rdvm.local
       ad_user: ryan
     
     vars_prompt:
-      - name: ad_password
+      - name: user_password
         prompt: "Please Enter your AD Password: "
         private: false
 
@@ -32,32 +32,27 @@
       - name: Install Required Packages
         apt:
           name:
-            - realmd
-            - sssd-tools
-            - libpam-sss
-            - adcli
-            - samba-common-bin
-            - oddjob
-            - oddjob-mkhomedir
-            - packagekit
+            - sssd
           state: latest
-      - name: Delete Ubuntu Configured resolve.conf
-        file:
-          path: /etc/resolv.conf
-          state: absent
-      - name: Symlink Default Resolve.conf
-        file:
-          src: /run/systemd/resolve/resolv.conf
-          dest: /etc/resolv.conf
-          state: link
-      - name: Join Domain
-        shell: echo {{ ad_password }} | realm join -U {{ ad_user }} {{ ad_domain }}
+      - name: Copy sssd.conf to config directory
+        copy:
+          src: /home/rdvm_admin/app_server_ansible/sssd.conf
+          dest: /etc/sssd/sssd.conf
+          owner: root
+          group: root
+          mode: 600
+      - name: Restart sssd service
+        systemd_service:
+          name: sssd
+          state: restarted 
       - name: Ensure home directory is created at sign in
         shell: echo "session optional  pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session
-      - name: Add sudo group to sudoers file
-        shell: echo "%sudo@rdvm.tech ALL=(ALL:ALL) ALL" >> /etc/sudoers
+      - name: Add User to admin group
+        user:
+          name: ryan
+          group: sudo
       - name: Import my SSH Keys
-        shell: echo { ad_password }} | su ryan@rdvm.tech -c "ssh-import-id-gh ryanvanmass"
+        shell: echo { user_password }} | su ryan -c "ssh-import-id-gh ryanvanmass"
 
   - name: Configure XEN Guest Utilities
     hosts: localhost
