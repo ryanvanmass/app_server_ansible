@@ -18,11 +18,7 @@
 
 
   - name: Join to Google Workspace
-    hosts: localhost
-    vars:
-      ad_domain: rdvm.local
-      ad_user: ryan
-    
+    hosts: localhost  
     vars_prompt:
       - name: user_password
         prompt: "Please Enter your AD Password: "
