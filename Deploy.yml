@@ -59,3 +59,18 @@
         apt:
           name: xe-guest-utilities
           state: latest
+
+  - name: Configure Cockpit
+    hosts: localhost
+    tasks:
+      - name: Add 45 Drives Repo
+        shell: curl -sSL https://repo.45drives.com/setup | sudo bash
+      - name: Update Package List
+        shell: apt update
+      - name: Install Cockpit Modules
+        apt:
+          name:
+            - cockpit-file-sharing
+            - cockpit-navigator
+            - cockpit-identities
+
