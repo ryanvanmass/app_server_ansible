@@ -21,7 +21,7 @@
     hosts: localhost  
     vars_prompt:
       - name: user_password
-        prompt: "Please Enter your AD Password: "
+        prompt: "Please Enter your Google Workspace Password: "
         private: false
 
     tasks:
@@ -37,6 +37,8 @@
           owner: root
           group: root
           mode: 600
+      - name: set file permissions
+        shell: chmod 600 /etc/sssd/ssd.conf
       - name: Restart sssd service
         systemd_service:
           name: sssd
