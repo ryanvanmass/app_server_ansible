@@ -16,6 +16,29 @@
           state: started
           enabled: yes
 
+  - name: Configure XEN Guest Utilities
+    hosts: localhost
+    tasks:
+      - name: Install xe-guest-utilities
+        apt:
+          name: xe-guest-utilities
+          state: latest
+
+  - name: Configure Cockpit
+    hosts: localhost
+    tasks:
+      - name: Add 45 Drives Repo
+        shell: curl -sSL https://repo.45drives.com/setup | sudo bash
+      - name: Update Package List
+        shell: apt update
+      - name: Install Cockpit Modules
+        apt:
+          name:
+            - cockpit-file-sharing
+            - cockpit-navigator
+            - cockpit-identities
+
+
 
   - name: Join to Google Workspace
     hosts: localhost  
@@ -51,26 +74,3 @@
           group: sudo
       - name: Import my SSH Keys
         shell: echo { user_password }} | su ryan -c "ssh-import-id-gh ryanvanmass"
-
-  - name: Configure XEN Guest Utilities
-    hosts: localhost
-    tasks:
-      - name: Install xe-guest-utilities
-        apt:
-          name: xe-guest-utilities
-          state: latest
-
-  - name: Configure Cockpit
-    hosts: localhost
-    tasks:
-      - name: Add 45 Drives Repo
-        shell: curl -sSL https://repo.45drives.com/setup | sudo bash
-      - name: Update Package List
-        shell: apt update
-      - name: Install Cockpit Modules
-        apt:
-          name:
-            - cockpit-file-sharing
-            - cockpit-navigator
-            - cockpit-identities
-
