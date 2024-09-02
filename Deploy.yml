@@ -38,6 +38,29 @@
             - cockpit-navigator
             - cockpit-identities
 
+  - name: Configure UFW
+    hosts: localhost
+    tasks:
+      - name: Configure Defaults
+        shell: ufw default deny incoming && ufw default allow outgoing
+      - name: allow SSH
+          ufw:
+            rule: allow
+            port: ssh
+            proto: tcp
+      - name: enable ufw
+          ufw:
+            state: enabled
+
+
+
+
+
+
+
+
+
+
 
 
   - name: Join to Google Workspace
