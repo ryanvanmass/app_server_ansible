@@ -8,7 +8,7 @@
           state: latest
       - name: Docker Compose
         apt:
-          name: docker-compose
+          name: docker-compose-v2
           state: latest
       - name: Enable Docker Socket
         service:
