@@ -53,8 +53,6 @@
       - name: Ensure home directory is created at sign in
         shell: echo "session optional  pam_mkhomedir.so skel=/etc/skel umask=077" >> /etc/pam.d/common-session
       - name: Add User to admin group
-        user:
-          name: ryan
-          group: sudo
+        shell: sudo usermod -aG sudo ryan
       - name: Import my SSH Keys
         shell: echo { user_password }} | su ryan -c "ssh-import-id-gh ryanvanmass"
